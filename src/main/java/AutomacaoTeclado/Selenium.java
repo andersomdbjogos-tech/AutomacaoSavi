@@ -4,10 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
-
+import java.util.logging.Logger;
 
 /*
 Botão fechar do popup:
@@ -23,7 +22,7 @@ Mensagem do POP-UP:
  */
 
 public class Selenium {
-
+    private static final Logger logger = Logger.getLogger(Selenium.class.getName());
     private String mensagemPopUp;
 
     public boolean tratarPopUp(WebDriver driver) {
@@ -55,32 +54,38 @@ public class Selenium {
         }
     }
 
-    public void campoInformarSenha(WebDriver driver) {
+    public void selecionarCampo(WebDriver driver, int i) {
         try {
-            WebElement campoSenha = driver.findElement(By.id("formulario:cd_senha"));
-            campoSenha.click();
-
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void selecionarCampo(WebDriver driver, int i){
-        try {
-            switch (i){
+            switch (i) {
                 case 1 -> {
                     WebElement campoSenha = driver.findElement(By.id("formulario:cd_senha"));
                     campoSenha.click();
                 }
 
+                case 2 -> {
+                    WebElement campoQuantidade = driver.findElement(By.id("formulario:quant_procedimento"));
+                    campoQuantidade.click();
+                }
+
+                case 3 -> {
+                    WebElement campoQuantidade = driver.findElement(By.id("formulario:dataInicialInput"));
+                    campoQuantidade.click();
+                }
+
+                case 4 -> {
+                    WebElement campoQuantidade = driver.findElement(By.id("formulario:hora_atendimento"));
+                    campoQuantidade.click();
+                }
+
+                case 5 -> {
+                    WebElement campoQuantidade = driver.findElement(By.id("formulario:valor"));
+                    campoQuantidade.click();
+                }
             }
 
-        } catch (TimeoutException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe("Erro ao tentar selecionar campo" + e.getMessage());
+            logger.log(java.util.logging.Level.SEVERE, "Detalhes do erro: ", e);
         }
     }
 
