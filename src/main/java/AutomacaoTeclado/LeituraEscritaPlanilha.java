@@ -10,12 +10,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class LeituraEscritaPlanilha {
+    private static final Logger logger = Logger.getLogger(LeituraEscritaPlanilha.class.getName());
 
     //Metodo para localizar o arquivo
     public static String filePath() {
-        return "C:\\Users\\ander\\IdeaProjects\\ProjetoAutoSavi\\Planilha modelo.xlsx";
+        return "C:\\Users\\ander\\IdeaProjects\\ProjetoAutoSavi\\CipeOutubro.xlsx";
     }
 
     public void sheetValidation() {
@@ -43,7 +45,8 @@ public class LeituraEscritaPlanilha {
                 System.out.println("Colunas validadas com sucesso\n");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.severe("Erro ao tentar validar planilha" + e.getMessage());
+            logger.log(java.util.logging.Level.SEVERE, "Detalhes do erro: ", e);
         }
     }
 
@@ -181,7 +184,8 @@ public class LeituraEscritaPlanilha {
             workbook.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.severe("Erro ao tentar executar automação: " + e.getMessage());
+            logger.log(java.util.logging.Level.SEVERE, "Detalhes do erro: ", e);
         }
     }
 }

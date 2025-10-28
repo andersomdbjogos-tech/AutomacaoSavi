@@ -1,26 +1,9 @@
 package AutomacaoTeclado;
 
 import org.openqa.selenium.WebDriver;
-
 import java.util.Scanner;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-
-/*
-Os campos necessarios sao: Informe a senha, quantidade procedimentos, prestador, tipo ato, data, hora, via acesso e valor.
-- Logo apos clicar no botão "Novo" são 7 tab para entra no campo "informe a senha".
-- 1 clique no tab apos estar no campo "informe a senha" é o botão de pesquisar senha.
-- 8 cliques em tab apos o botão de pesquisar senha entra no campo "quantidade procedimentos".
-- 1 tab apos o campo "quantidade procedimentos" entra no campo de "prestador" e as setas funcionam para alterar entre as opções.
-- Mais 1 tab apos o campo "prestador" entra no campo "Tipo ato" onde as setas tambem funcionam.
-- 2 tabs entra no campo "Data" e ele é digitavel e passivel a copia e cola.
-- Mais 1 clique no tab entra no campo "Hora" que tambem é passivel a copia e cola.
-- Novamente clicando no tab entra no campo "Via Acesso".
-- E mais 1 tab entra no campo "Valor".
-- 2 tabs entra no botão "Gravar".
-- 19 tabs ate fechar o pop up 01 e espaço para executar o botao "Fechar"
-- 22 tabs ate retornar ao campo informar senha.
-*/
 
 public class Automacao {
     private Robot robot;
@@ -73,12 +56,15 @@ public class Automacao {
         }
     }
 
-    public void shortDelay() {
-        robot.delay(1000);
+    private void cleanText(){
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_A);
+        robot.keyRelease(KeyEvent.VK_A);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
     }
 
-    public void longDelay() {
-        robot.delay(3000);
+    public void shortDelay() {
+        robot.delay(1000);
     }
 
     public void delayInicial() {
@@ -86,14 +72,10 @@ public class Automacao {
     }
 
     public void autoKeybord(Planilha planilha, WebDriver driver, Selenium selenium) {
-        //1.1 - Clicar campo senha
-        selenium.campoInformarSenha(driver);
+        //1.1 - Clicar campo senha (Campo 1)
+        selenium.selecionarCampo(driver, 1);
+        cleanText();
         shortDelay();
-        //1.2 - Limpando campo senha
-        robot.keyPress(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_A);
-        robot.keyRelease(KeyEvent.VK_A);
-        robot.keyRelease(KeyEvent.VK_CONTROL);
 
         //2.1 - Escrever senha
         writeText(planilha.getSenha());
@@ -103,8 +85,9 @@ public class Automacao {
         robot.keyRelease(KeyEvent.VK_SPACE);
         robot.delay(500);
 
-        //Passo 3.1 - Campo quantidade
-        pressTab(8);
+        //Passo 3.1 - Campo quantidade (Campo 2)
+        selenium.selecionarCampo(driver, 2);
+        cleanText();
         //Passo 3.2 - Informar quantidade
         writeText(planilha.getQuantidade());
 
@@ -126,14 +109,16 @@ public class Automacao {
         }
         shortDelay();
 
-        //Passo 6.1 - Campo data
-        pressTab(2);
+        //Passo 6.1 - Campo data (Campo 3)
+        selenium.selecionarCampo(driver, 3);
+        cleanText();
         shortDelay();
         //Passo 6.2 - Informar data
         writeText(planilha.getData());
 
-        //Passo 7.1 - Campo hora
-        pressTab(1);
+        //Passo 7.1 - Campo hora (Campo 4)
+        selenium.selecionarCampo(driver, 4);
+        cleanText();
         shortDelay();
         //Passo 7.2 - Informar hora
         writeText(planilha.getHora());
@@ -143,14 +128,12 @@ public class Automacao {
         //Passo 8.2 - Informar via de acesso
         this.numeroDeSetasVia = planilha.getNumeroViaAcesso();
         if (this.numeroDeSetasVia != 0) {
-            for (int i = 0; i < this.numeroDeSetasVia; i++) {
-                robot.keyPress(KeyEvent.VK_DOWN);
-                robot.keyRelease(KeyEvent.VK_DOWN);
-            }
+            pressDown(this.numeroDeSetasVia);
         }
 
-        //Passo 9.1 - Campo valor
-        pressTab(1);
+        //Passo 9.1 - Campo valor (Campo 5)
+        selenium.selecionarCampo(driver, 5);
+        cleanText();
         //Passo 9.2 - Informar valor
         writeText(planilha.getValor());
 
@@ -167,11 +150,9 @@ public class Automacao {
         robot.delay(3000);
 
         //Passo 12 - tratar pop-up
-        //selenium.tratarPopUp(driver);
-
         int tentativas = 0;
         int limiteTentativas = 5;
-        boolean deteccao = false;
+        boolean deteccao;
         while (tentativas < limiteTentativas) {
             tentativas++;
             System.out.println(tentativas + "° Tentativa de tratamento do popUp");
@@ -180,7 +161,6 @@ public class Automacao {
             if (deteccao) {
                 break;
             }
-
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

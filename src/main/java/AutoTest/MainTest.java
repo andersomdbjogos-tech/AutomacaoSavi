@@ -1,7 +1,7 @@
 package AutoTest;
 
 //import AutomacaoTeclado.LeituraPlanilha;
-import AutomacaoTeclado.DriverSelerium;
+import AutomacaoTeclado.VerItensCadastrados;
 import org.openqa.selenium.WebDriver;
 
         import java.awt.*;
@@ -15,11 +15,11 @@ public class MainTest {
         AutomacaoTest01 automacao = new AutomacaoTest01(robot);
         TratamentoTest01 tratamento = new TratamentoTest01();
         DriverSelerium01 driverS = new DriverSelerium01();
+        VerItensCadastrados verItensCadastrados = new VerItensCadastrados();
 
         driverS.openSavi();
         WebDriver driver = driverS.getDriver();
-        leitura.sheetValidation();
-        automacao.prestadorDefinition();
-        leitura.valorSteers(automacao, driver, tratamento);
+        verItensCadastrados.soma(driver);
+
     }
 }
