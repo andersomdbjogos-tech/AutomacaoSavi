@@ -4,12 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.FindBy;
 
-import java.time.Duration;
 import java.util.List;
 
 
@@ -26,20 +22,19 @@ Mensagem do POP-UP:
 <span class="ui-messages-warn-summary">Senha não localizada. Por favor, tente novamente.</span>
  */
 
-public class TratamentoPopUps {
+public class Selenium {
 
     private String mensagemPopUp;
 
-    public void tratarPopUp(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
+    public boolean tratarPopUp(WebDriver driver) {
         try {
-
             List<WebElement> mensagens = driver.findElements(By.cssSelector("span.ui-messages-warn-summary, span.ui-messages-info-summary"));
+            if (mensagens.isEmpty()) {
+                return false;
+            }
 
-            for (WebElement msg : mensagens){
+            for (WebElement msg : mensagens) {
                 String texto = msg.getText();
-
                 if (!texto.isEmpty()) {
                     System.out.println("Mensagem lida: " + texto);
                     setMensagemPopUp(texto);
@@ -49,37 +44,43 @@ public class TratamentoPopUps {
 
             WebElement botaoFechar = driver.findElement(By.cssSelector("button.btn.btn-info"));
             botaoFechar.click();
+            return true;
 
         } catch (TimeoutException e) {
             System.out.println("Nenhum pop-up detectado.");
+            return false;
         } catch (Exception e) {
             System.out.println("Erro ao tratar pop-up: " + e.getMessage());
+            return false;
         }
     }
 
     public void campoInformarSenha(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         try {
             WebElement campoSenha = driver.findElement(By.id("formulario:cd_senha"));
             campoSenha.click();
 
         } catch (TimeoutException e) {
-            System.out.println("Nenhum pop-up detectado.");
+            e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("Erro ao tratar pop-up: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    public void limparCampo(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+    public void selecionarCampo(WebDriver driver, int i){
         try {
-            WebElement campoSenha = driver.findElement(By.id("formulario:cd_senha"));
-            campoSenha.clear();
+            switch (i){
+                case 1 -> {
+                    WebElement campoSenha = driver.findElement(By.id("formulario:cd_senha"));
+                    campoSenha.click();
+                }
+
+            }
 
         } catch (TimeoutException e) {
-            System.out.println("Nenhum campo detectado.");
+            e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("Erro ao tratar campo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
