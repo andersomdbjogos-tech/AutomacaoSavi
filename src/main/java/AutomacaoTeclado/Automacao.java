@@ -1,7 +1,5 @@
 package AutomacaoTeclado;
 
-import AutoTest.PlanilhaTest01;
-import AutoTest.TratamentoTest01;
 import org.openqa.selenium.WebDriver;
 
 import java.util.Scanner;
@@ -29,17 +27,9 @@ public class Automacao {
     private int numeroDeSetasPres;
     private int numeroDeSetasAto;
     private int numeroDeSetasVia;
-    private static final int Delay_Curto = 50;
-    private static final int Delay_Longo = 1000;
 
     public Automacao(Robot robot) {
         this.robot = robot;
-    }
-
-    public void pausa(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Aperte Enter");
-        scanner.nextLine();
     }
 
     public void prestadorDefinition() {
@@ -84,41 +74,28 @@ public class Automacao {
     }
 
     public void shortDelay() {
-        robot.delay(Delay_Curto);
+        robot.delay(1000);
     }
 
     public void longDelay() {
-        robot.delay(Delay_Longo);
+        robot.delay(3000);
     }
 
     public void delayInicial() {
-        robot.delay(3000); // Delay para começar
+        robot.delay(5000); // Delay para começar
     }
 
-    public void autoReport(Planilha planilha) {
-        System.out.println("///////////////////////RELATORIO AUTO/////////////////////////////");
-        System.out.println("Senha recebida do getSenha: " + planilha.getSenha());
-        System.out.println("Quantidade recebida do getQuantidade: " + planilha.getQuantidade());
-        System.out.println("Numero de setas prestador digitado: " + numeroDeSetasPres);
-        System.out.println("Quantidade recebida do getTipoAto: " + planilha.getTipoAto() +
-                " || Numero de setas: " + numeroDeSetasAto);
-        System.out.println("Quantidade recebida do getData: " + planilha.getData());
-        System.out.println("Quantidade recebida do getHora: " + planilha.getHora());
-        System.out.println("Quantidade recebida do getViaAcesso: " + planilha.getViaAcesso() +
-                " || Numero de setas: " + numeroDeSetasVia);
-        System.out.println("Quantidade recebida do getValor: " + planilha.getValor());
-        System.out.println("////////////////////////////////////////////////////////////////////");
-    }
-
-    public void autoKeybord(Planilha planilha, WebDriver driver, TratamentoPopUps tratamento) {
-
-        //Entrar e limpar campo senha
-        tratamento.campoInformarSenha(driver);
+    public void autoKeybord(Planilha planilha, WebDriver driver, Selenium selenium) {
+        //1.1 - Clicar campo senha
+        selenium.campoInformarSenha(driver);
         shortDelay();
-        tratamento.limparCampo(driver);
-        longDelay();
+        //1.2 - Limpando campo senha
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_A);
+        robot.keyRelease(KeyEvent.VK_A);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
 
-        //Passo 2.1 - Escrever senha
+        //2.1 - Escrever senha
         writeText(planilha.getSenha());
         pressTab(1);
         //Passo 2.2 - Pesquisar senha
@@ -190,6 +167,37 @@ public class Automacao {
         robot.delay(3000);
 
         //Passo 12 - tratar pop-up
-        tratamento.tratarPopUp(driver);
+        //selenium.tratarPopUp(driver);
+
+        int tentativas = 0;
+        int limiteTentativas = 5;
+        boolean deteccao = false;
+        while (tentativas < limiteTentativas) {
+            tentativas++;
+            System.out.println(tentativas + "° Tentativa de tratamento do popUp");
+
+            deteccao = selenium.tratarPopUp(driver);
+            if (deteccao) {
+                break;
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    public int getNumeroDeSetasPres() {
+        return numeroDeSetasPres;
+    }
+
+    public int getNumeroDeSetasAto() {
+        return numeroDeSetasAto;
+    }
+
+    public int getNumeroDeSetasVia() {
+        return numeroDeSetasVia;
     }
 }
