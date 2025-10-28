@@ -1,7 +1,4 @@
 package AutomacaoTeclado;
-
-import AutoTest.TratamentoTest01;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,29 +13,6 @@ public class Planilha {
     private int numeroViaAcesso;
     private String valor;
     private String observacao;
-
-
-    public void relatorio() {
-        System.out.println("---------------Relatorio---------------");
-        System.out.println("Senha foi armazenada(" + getSenha() + ")");
-        System.out.println("========================================");
-        System.out.println("Quantidade foi armazenada(" + getQuantidade() + ")");
-        System.out.println("========================================");
-        System.out.println("Tipo do ato foi armazenado(" + getTipoAto() + ")");
-        System.out.println("========================================");
-        System.out.println("Numero do tipo do ato foi armazenado(" + getNumeroTipoAto() + ")");
-        System.out.println("========================================");
-        System.out.println("Data foi armazenada(" + getData() + ")");
-        System.out.println("========================================");
-        System.out.println("Hora foi armazenada(" + getHora() + ")");
-        System.out.println("========================================");
-        System.out.println("Via de acesso foi armazenada(" + getViaAcesso() + ")");
-        System.out.println("========================================");
-        System.out.println("Numero da via de acesso foi armazenado(" + getNumeroViaAcesso() + ")");
-        System.out.println("========================================");
-        System.out.println("Valor foi armazenado(" + getValor() + ")");
-        System.out.println("========================================");
-    }
 
     public void mapaTipoAto() {
         Map<String, Integer> tipoAtoMap = new HashMap<>();
@@ -56,7 +30,6 @@ public class Planilha {
         tipoAtoMap.put("1AUX", 12);
         tipoAtoMap.put("2AUX", 13);
         tipoAtoMap.put("3AUX", 14);
-
         this.numeroTipoAto = tipoAtoMap.getOrDefault(getTipoAto(), 0);
     }
 
@@ -64,12 +37,11 @@ public class Planilha {
         Map<String, Integer> viaAcessoMap = new HashMap<>();
         viaAcessoMap.put("M", 1);
         viaAcessoMap.put("D", 2);
-
         this.numeroViaAcesso = viaAcessoMap.getOrDefault(getViaAcesso(), 0);
     }
 
-    public int verificacaoCadastro(TratamentoPopUps tratamento) {
-        String mensagem = tratamento.getMensagemPopUp();
+    public int verificacaoCadastro(Selenium selenium) {
+        String mensagem = selenium.getMensagemPopUp();
         return mensagem.contains("Honorário Médico processado com sucesso") ? 1 : 0;
     }
 
@@ -77,16 +49,8 @@ public class Planilha {
         return numeroViaAcesso;
     }
 
-    public void setNumeroViaAcesso(int numeroViaAcesso) {
-        this.numeroViaAcesso = numeroViaAcesso;
-    }
-
     public int getNumeroTipoAto() {
         return numeroTipoAto;
-    }
-
-    public void setNumeroTipoAto(int numeroTipoAto) {
-        this.numeroTipoAto = numeroTipoAto;
     }
 
     public String getSenha() {

@@ -1,6 +1,5 @@
 package AutomacaoTeclado;
 
-import AutomacaoTeclado.Automacao;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LeituraPlanilha {
+public class LeituraEscritaPlanilha {
 
     //Metodo para localizar o arquivo
     public static String filePath() {
@@ -48,7 +47,7 @@ public class LeituraPlanilha {
         }
     }
 
-    public void setCellCadastro(TratamentoPopUps tratamento, Planilha planilha, Sheet sheet, int i) {
+    public void setCellCadastro(Selenium selenium, Planilha planilha, Sheet sheet, int i) {
         Row row = sheet.getRow(i);
         if (row == null) return;
 
@@ -57,23 +56,23 @@ public class LeituraPlanilha {
 
         Cell valorCadastro = row.getCell(9, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 
-        if (planilha.verificacaoCadastro(tratamento) == 1) {
+        if (planilha.verificacaoCadastro(selenium) == 1) {
             valorCadastro.setCellValue("OK");
         } else {
             valorCadastro.setCellValue("ERRO");
         }
     }
 
-    public void setCellMensagem(TratamentoPopUps tratamento, Sheet sheet, int i){
+    public void setCellMensagem(Selenium selenium, Sheet sheet, int i) {
         Row row = sheet.getRow(i);
         if (row == null) return;
 
         Cell valorMensagem = row.getCell(8, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 
-        valorMensagem.setCellValue(tratamento.getMensagemPopUp());
+        valorMensagem.setCellValue(selenium.getMensagemPopUp());
     }
 
-    public boolean checkCadastro(TratamentoPopUps tratamento, Planilha planilha, Sheet sheet, DataFormatter formatter, int i){
+    public boolean checkCadastro(Sheet sheet, DataFormatter formatter, int i) {
         Row row = sheet.getRow(i);
 
         Cell valorCadastrado = row.getCell(9, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
@@ -81,18 +80,18 @@ public class LeituraPlanilha {
 
         String statusCadastrado = formatter.formatCellValue(valorCadastrado);
 
-        return statusCadastrado.trim().equalsIgnoreCase("OK"); // || statusCadastrado.trim().equalsIgnoreCase("ERRO");
+        return statusCadastrado.trim().equalsIgnoreCase("OK");
     }
 
-    public void valorSteers(Automacao automacao, WebDriver driver, TratamentoPopUps tratamento) {
-        try (FileInputStream fis = new FileInputStream(filePath())){
+    public void valorSteers(Automacao automacao, WebDriver driver, Selenium selenium) {
+        try (FileInputStream fis = new FileInputStream(filePath())) {
             Workbook workbook = new XSSFWorkbook(fis);
 
             Sheet sheet = workbook.getSheetAt(0);
             Row primeiraLinha = sheet.getRow(0);
             DataFormatter formatter = new DataFormatter();
             Planilha planilha = new Planilha();
-
+            Relatorio relatorio = new Relatorio();
 
             Map<String, Integer> colunas = new HashMap<>();
 
@@ -105,7 +104,7 @@ public class LeituraPlanilha {
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 Row linha = sheet.getRow(i);
 
-                if (checkCadastro(tratamento, planilha, sheet, formatter, i)){
+                if (checkCadastro(sheet, formatter, i)) {
                     System.out.println("**************************\n" +
                             "Linha " + i + " com cadastro OK\n" +
                             "**************************"
@@ -169,12 +168,12 @@ public class LeituraPlanilha {
                 }
                 planilha.mapaTipoAto();
                 planilha.mapaViaAcesso();
-                planilha.relatorio();
+                relatorio.planilhaReport(planilha);
                 automacao.delayInicial();
-                automacao.autoKeybord(planilha, driver, tratamento);
-                automacao.autoReport(planilha);
-                setCellMensagem(tratamento, sheet, i);
-                setCellCadastro(tratamento, planilha, sheet, i);
+                automacao.autoKeybord(planilha, driver, selenium);
+                relatorio.autoReport(planilha, automacao);
+                setCellMensagem(selenium, sheet, i);
+                setCellCadastro(selenium, planilha, sheet, i);
             }
             try (FileOutputStream fos = new FileOutputStream(filePath())) {
                 workbook.write(fos);
