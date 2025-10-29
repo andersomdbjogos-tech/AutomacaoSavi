@@ -41,4 +41,15 @@ public class Backup {
         }
     }
 
+public class Carro{
+    private String nome;
+    private int ano;
+
+    public interface Carro {
+        void definirNome();
+        void definirAno();
+    }
+}
+
+
 */
