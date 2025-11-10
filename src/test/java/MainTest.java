@@ -1,21 +1,29 @@
-import AutomacaoTeclado.*;
+import AutomacaoSavi.AutoData.AutomacaoData;
+import AutomacaoSavi.Automacao.AutoMaster;
+import AutomacaoSavi.Automacao.Automacao;
+import AutomacaoSavi.Planilha.LeituraPlanilha;
+import AutomacaoSavi.Planilha.Planilha;
+import AutomacaoSavi.SeleniumDriver.DriverSelerium;
+import AutomacaoSavi.SeleniumDriver.Selenium;
 import org.openqa.selenium.WebDriver;
+
 import java.awt.*;
 
 //60714652300 MA86322917
 
 public class MainTest {
     public static void main(String[] args) throws AWTException {
-        LeituraEscritaPlanilha leitura = new LeituraEscritaPlanilha();
+        Planilha planilha = new Planilha();
+        LeituraPlanilha leituraPlanilha = new LeituraPlanilha();
+        AutomacaoData automacaoData = new AutomacaoData();
         Robot robot = new Robot();
         Automacao automacao = new Automacao(robot);
-        Selenium selenium = new Selenium();
         DriverSelerium driverS = new DriverSelerium();
-        VerItensCadastrados verItensCadastrados = new VerItensCadastrados();
+//        WebDriver driver = driverS.getDriver();
+        Selenium selenium = new Selenium();
 
-        driverS.openSavi();
-        WebDriver driver = driverS.getDriver();
-        verItensCadastrados.soma(driver);
+        AutoMaster autoMaster = new AutoMaster(planilha, leituraPlanilha, automacaoData, automacao, driverS, selenium);
 
+        autoMaster.autoStart();
     }
 }
