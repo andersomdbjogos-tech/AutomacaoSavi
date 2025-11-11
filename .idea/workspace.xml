@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="baa4fdf7-3441-4c4d-a5f7-52bf38419d5d" name="Changes" comment="Adição de loop ao chamar o metodo que trata o popUp, criação de uma classe para ficar com os &quot;relatorios&quot;.">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-    </list>
+    <list default="true" id="baa4fdf7-3441-4c4d-a5f7-52bf38419d5d" name="Changes" comment="Adição de loop ao chamar o metodo que trata o popUp, criação de uma classe para ficar com os &quot;relatorios&quot;." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -70,7 +66,7 @@
       <recent name="AutoTest" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainTest (1)">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="LeituraPlanilha" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="AutomacaoSavi.Planilha.LeituraPlanilha" />
       <module name="ProjetoAutoSavi" />
@@ -132,8 +128,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MainTest (1)" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.MainTest (1)" />
         <item itemvalue="Application.MainTest" />
         <item itemvalue="Application.TratamentoTest01" />
         <item itemvalue="Application.LeituraPlanilha" />
